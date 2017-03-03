@@ -6,16 +6,26 @@ angular.module('demoApp', ['ui.router'])
 		
 		url : '/home',
 		templateUrl : 'views/home.html',
+		controller : 'HomeCtrl',
+		controllerAs: 'vm',
+		resolve: {
+		    people:  ['$state', function($state) {
+		      return console.log('resolve=>'+ $state.current.name);
+		    }]
+		}
 	})
 	.state('home.moen',{
 		
-		url : '/home/moen',
-		templateUrl : 'views/moen.html',
+		url : '/moen',
+		templateUrl : 'views/home/moen.html',
+		
+		
+		
 	})
 	.state('home.mansfield',{
 		
-		url : '/home/mansfield',
-		templateUrl : 'views/mansfield.html',
+		url : '/mansfield',
+		templateUrl : 'views/home/mansfield.html',
 	})
 	.state('rules',{
 		
@@ -24,5 +34,17 @@ angular.module('demoApp', ['ui.router'])
 	});
 	
 	$locationProvider.hashPrefix('');
-	$urlRouterProvider.otherwise('home');
+	$urlRouterProvider.otherwise('home.moen');
+}])
+.controller('HomeCtrl', ['$state', function($state) {
+	var vm=this;
+	var init = function () {
+		console.log('path=>'+ $state.current.name);
+		console.log('people=>'+ vm.people);
+		$state.go('home.moen');
+	};
+		// and fire it after definition
+	init();
+	
+
 }]);
