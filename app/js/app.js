@@ -34,7 +34,7 @@ angular.module('demoApp', ['ui.router'])
 	});
 	
 	$locationProvider.hashPrefix('');
-	$urlRouterProvider.otherwise('home.moen');
+	$urlRouterProvider.otherwise('home');
 }])
 .controller('HomeCtrl', ['$state', function($state) {
 	var vm=this;
@@ -45,6 +45,52 @@ angular.module('demoApp', ['ui.router'])
 	};
 		// and fire it after definition
 	init();
-	
+}])
+.directive('tab', function(){
+	return {
+	    restrict: 'E',
+	    transclude: true,
+	    template: '<h2>Hello world in tab template!</h2> <div role="tabpanel" ng-transclude></div>',
+	    require: '^tabset',
+	    scope: {
+	    	heading: '@'
+	    },
+	    link: function(scope, elem, attr, tabsetCtrl) {
+	    	scope.active = false;
+	    	tabsetCtrl.addTab(scope);
+	    }
+	  }
+})
+.directive('tabset', function() {
+  return {
+    restrict: 'E',
+    transclude: true,
+    scope: { },
+    templateUrl: 'views/tabset.html',
+    bindToController: true,
+    controllerAs: 'tabset',
+    controller: function() {
+      var self = this;
+      self.tabs = [];
+      
+      self.addTab = function addTab(tab) {
+    	  self.tabs.push(tab);
+    	  if(self.tabs.length === 1) {
+    		  tab.active = true;
+    	  }
+      };
+      
 
-}]);
+	  self.select = function(selectedTab) {
+		angular.forEach(self.tabs, function(tab) {
+			if (tab.active && tab !== selectedTab) {
+				tab.active = false;
+			}
+		})
+
+		selectedTab.active = true;
+	};
+      
+    }
+  }
+});
