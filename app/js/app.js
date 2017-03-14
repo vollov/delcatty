@@ -28,9 +28,12 @@ angular.module('demoApp', ['ui.router'])
 		templateUrl : 'views/home/mansfield.html',
 	})
 	.state('rules',{
-		
 		url : '/about',
 		templateUrl : 'views/about.html'
+	})
+	.state('product',{
+		url : '/product',
+		templateUrl : 'views/product.html'
 	});
 	
 	$locationProvider.hashPrefix('');
@@ -50,13 +53,21 @@ angular.module('demoApp', ['ui.router'])
 	return {
 	    restrict: 'E',
 	    transclude: true,
-	    template: '<h2>Hello world in tab template!</h2> <div role="tabpanel" ng-transclude></div>',
+	    template: '<div role="tabpanel" ng-show="active" ng-transclude></div>',
 	    require: '^tabset',
 	    scope: {
 	    	heading: '@'
 	    },
 	    link: function(scope, elem, attr, tabsetCtrl) {
 	    	scope.active = false;
+//	    	scope.disabled = false;
+//	    	
+//	    	if(attr.disable) {
+//	    		  attr.$observe('disable', function(value) {
+//	    		   scope.disabled = (value !== 'false')
+//	    		  })
+//	    	}
+	    	
 	    	tabsetCtrl.addTab(scope);
 	    }
 	  }
@@ -82,8 +93,14 @@ angular.module('demoApp', ['ui.router'])
       
 
 	  self.select = function(selectedTab) {
+		  if(selectedTab.disabled) { return; }
+		  
+		console.log('selected tab=%j', selectedTab.heading);
 		angular.forEach(self.tabs, function(tab) {
+			console.log('for tab=%j', tab.heading);
+			
 			if (tab.active && tab !== selectedTab) {
+				console.log('other tab=%j', tab.heading);
 				tab.active = false;
 			}
 		})

@@ -3,7 +3,7 @@
 	"description": "a demo for angular-ui nested views",
 	"version": "1.0.0",
 	"scripts": {
-		"start": "node delcatty.8000.js"
+		"start": "node delcatty.8003.js"
 	},
 	"devDependencies": {
 		"gulp": "*",

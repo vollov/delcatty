@@ -3,6 +3,6 @@ var path = require('path');
 
 module.exports = {
 	app:{
-		port:8000
+		port:8003
 	}
 };
