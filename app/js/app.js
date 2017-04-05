@@ -3,7 +3,7 @@
 angular.module('demoApp', ['ui.router'])
 .config(['$stateProvider','$locationProvider', '$urlRouterProvider', '$httpProvider', function($stateProvider, $locationProvider, $urlRouterProvider, $httpProvider) {
 	$stateProvider.state('home',{
-		
+
 		url : '/home',
 		templateUrl : 'views/home.html',
 		controller : 'HomeCtrl',
@@ -14,16 +14,20 @@ angular.module('demoApp', ['ui.router'])
 		    }]
 		}
 	})
+	.state('contacts',{
+		url : '/contacts',
+		templateUrl : 'views/contacts.html',
+	})
 	.state('home.moen',{
-		
+
 		url : '/moen',
 		templateUrl : 'views/home/moen.html',
-		
-		
-		
+
+
+
 	})
 	.state('home.mansfield',{
-		
+
 		url : '/mansfield',
 		templateUrl : 'views/home/mansfield.html',
 	})
@@ -35,10 +39,22 @@ angular.module('demoApp', ['ui.router'])
 		url : '/product',
 		templateUrl : 'views/product.html'
 	});
-	
+
 	$locationProvider.hashPrefix('');
 	$urlRouterProvider.otherwise('home');
 }])
+.controller('ExampleController', ['$scope', function($scope) {
+	$scope.title = 'Lorem Ipsum';
+	$scope.text = 'Neque porro quisquam est qui dolorem ipsum quia dolor...';
+}])
+.directive('pane', function(){
+	 return {
+		 restrict: 'E',
+		 transclude: true,
+		 scope: { title:'@' },
+		 templateUrl: 'views/component/trans.html'
+	 };
+})
 .controller('HomeCtrl', ['$state', function($state) {
 	var vm=this;
 	var init = function () {
@@ -61,13 +77,13 @@ angular.module('demoApp', ['ui.router'])
 	    link: function(scope, elem, attr, tabsetCtrl) {
 	    	scope.active = false;
 //	    	scope.disabled = false;
-//	    	
+//
 //	    	if(attr.disable) {
 //	    		  attr.$observe('disable', function(value) {
 //	    		   scope.disabled = (value !== 'false')
 //	    		  })
 //	    	}
-	    	
+
 	    	tabsetCtrl.addTab(scope);
 	    }
 	  }
@@ -83,22 +99,22 @@ angular.module('demoApp', ['ui.router'])
     controller: function() {
       var self = this;
       self.tabs = [];
-      
+
       self.addTab = function addTab(tab) {
     	  self.tabs.push(tab);
     	  if(self.tabs.length === 1) {
     		  tab.active = true;
     	  }
       };
-      
+
 
 	  self.select = function(selectedTab) {
 		  if(selectedTab.disabled) { return; }
-		  
+
 		console.log('selected tab=%j', selectedTab.heading);
 		angular.forEach(self.tabs, function(tab) {
 			console.log('for tab=%j', tab.heading);
-			
+
 			if (tab.active && tab !== selectedTab) {
 				console.log('other tab=%j', tab.heading);
 				tab.active = false;
@@ -107,7 +123,7 @@ angular.module('demoApp', ['ui.router'])
 
 		selectedTab.active = true;
 	};
-      
+
     }
   }
 });
